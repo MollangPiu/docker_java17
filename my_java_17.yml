@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  springboot:
+    image: my-spring # 이미지 명 정의
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: springboot_app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://192.168.56.100:3306/testdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    restart: unless-stopped
