@@ -2,15 +2,25 @@ version: "3.8"
 
 services:
   springboot:
-    image: my-spring # 이미지 명 정의
     build:
       context: .
       dockerfile: Dockerfile
+    image: my-spring
     container_name: springboot_app
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/testdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://my_mysql:3306/testdb
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
+    working_dir: /app
+    volumes:
+      - ./build/libs/study-0.0.1-SNAPSHOT.jar:/app/app.jar
+    networks:
+      - shared_net
     restart: unless-stopped
+
+networks:
+  shared_net:
+    external: true
+    name: shared_net

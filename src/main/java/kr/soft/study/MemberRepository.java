@@ -6,6 +6,8 @@ import kr.soft.study.entity.Member;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @AllArgsConstructor
 public class MemberRepository {
@@ -15,5 +17,9 @@ public class MemberRepository {
     @Transactional
     public void save(Member member) {
         em.persist(member);
+    }
+
+    public List<Member> findAll() {
+        return em.createQuery("from Member m", Member.class).getResultList();
     }
 }

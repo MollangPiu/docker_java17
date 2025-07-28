@@ -2,12 +2,14 @@ package kr.soft.study;
 
 import kr.soft.study.entity.Member;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -24,5 +26,27 @@ public class MemberController {
         member.setName(name);
         memberRepository.save(member);
 
+    }
+
+    @GetMapping("/list")
+    public List<MemberRes> list() {
+        log.info("list");
+        List<Member> members = memberRepository.findAll();
+        List<MemberRes> memberResList = new ArrayList<>();
+        for (Member member : members) {
+            memberResList.add(new MemberRes(member));
+        }
+
+        return memberResList;
+    }
+
+    @Data
+    private static class MemberRes {
+        public MemberRes(Member member) {
+            this.idx = member.getIdx();
+            this.name = member.getName();
+        }
+        private long idx;
+        private String name;
     }
 }
